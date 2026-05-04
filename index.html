@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Eken26 Nexus</title>
+</head>
+<body>
+
+<h1>Eken26 Nexus</h1>
+<button onclick="login()">Pi ile Giriş</button>
+
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
+
+<script>
+const Pi = window.Pi;
+Pi.init({ version: "2.0", sandbox: true });
+
+function login() {
+  Pi.authenticate(['username'], function(auth) {
+    alert("Hoşgeldin " + auth.user.username);
+  });
+}
+</script>
+
+</body>
+</html>
