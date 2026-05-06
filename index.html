@@ -17,9 +17,16 @@ Pi.init({ version: "2.0", sandbox: true });
 function login() {
   Pi.authenticate(['username'], function(auth) {
     alert("Hoşgeldin " + auth.user.username);
-  });
+});
 }
 </script>
 
+<script>
+document.querySelectorAll("*").forEach(el => {
+  el.style.pointerEvents = "auto";
+});
+</script>
+
 </body>
-</html>
+</html>  
+
