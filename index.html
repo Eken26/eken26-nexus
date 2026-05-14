@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eken26 Pi Verify</title>
+  <title>Pi Verify</title>
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 </head>
 <body>
@@ -14,14 +14,14 @@
   <script>
     Pi.init({ version: "2.0", sandbox: true });
 
-    document.getElementById("loginBtn").addEventListener("click", async function () {
+    document.getElementById("loginBtn").addEventListener("click", async () => {
       try {
         document.getElementById("status").innerText = "Signing in...";
 
         const auth = await Pi.authenticate(
           ["username"],
-          function(payment) {},
-          function(cancelledPayment) {}
+          function() {},
+          function() {}
         );
 
         document.getElementById("status").innerText =
