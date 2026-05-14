@@ -1,32 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Eken26 Nexus</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eken26pi</title>
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 </head>
-<body>
+<body style="font-family: Arial; text-align:center; padding-top:80px; background:#f5f5f5;">
 
-<h1>Eken26 Nexus</h1>
-<button onclick="login()">Pi ile Giriş</button>
+  <h1>Eken26pi</h1>
+  <p>Pi Authentication Verification</p>
 
-<script src="https://sdk.minepi.com/pi-sdk.js"></script>
+  <button onclick="piLogin()" style="padding:15px 30px; font-size:18px; background:#6c5ce7; color:white; border:none; border-radius:10px; cursor:pointer;">
+    Sign in with Pi
+  </button>
 
-<script>
-const Pi = window.Pi;
-Pi.init({ version: "2.0", sandbox: true });
+  <script>
+    Pi.init({ version: "2.0", sandbox: true });
 
-function login() {
-  Pi.authenticate(['username'], function(auth) {
-    alert("Hoşgeldin " + auth.user.username);
-});
-}
-</script>
+    async function piLogin() {
+      try {
+        const scopes = ['username', 'payments'];
+        const authResult = await Pi.authenticate(scopes, function(payment) {
+          return;
+        });
 
-<script>
-document.querySelectorAll("*").forEach(el => {
-  el.style.pointerEvents = "auto";
-});
-</script>
+        alert("Welcome " + authResult.user.username);
+      } catch (err) {
+        alert("Pi login failed");
+        console.log(err);
+      }
+    }
+  </script>
 
 </body>
-</html>  
-
+</html>
