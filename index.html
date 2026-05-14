@@ -1,37 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eken26pi</title>
+  <title>Eken26 Pi Login</title>
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 </head>
-<body style="font-family: Arial; text-align:center; padding-top:80px; background:#f5f5f5;">
-
-  <h1>Eken26pi</h1>
-  <p>Pi Authentication Verification</p>
-
-  <button onclick="piLogin()" style="padding:15px 30px; font-size:18px; background:#6c5ce7; color:white; border:none; border-radius:10px; cursor:pointer;">
-    Sign in with Pi
-  </button>
+<body>
+  <h2>Eken26 Pi Verification</h2>
+  <button id="pi-login">Sign in with Pi</button>
 
   <script>
     Pi.init({ version: "2.0", sandbox: true });
 
-    async function piLogin() {
+    document.getElementById("pi-login").addEventListener("click", async function () {
       try {
-        const scopes = ['username', 'payments'];
-        const authResult = await Pi.authenticate(scopes, function(payment) {
-          return;
-        });
-
-        alert("Welcome " + authResult.user.username);
-      } catch (err) {
-        alert("Pi login failed");
-        console.log(err);
+        await Pi.authenticate(["username"], function(payment) {});
+        document.body.innerHTML = "<h2>Pi Login Success</h2>";
+      } catch (e) {
+        console.log(e);
       }
-    }
+    });
   </script>
-
 </body>
 </html>
