@@ -1,37 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pi Verify</title>
-  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+<meta charset="UTF-8">
+<title>Pi Verify</title>
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
 </head>
 <body>
-  <h2>Pi Authentication Test</h2>
-  <button id="loginBtn">Sign in with Pi</button>
-  <p id="status">Ready</p>
 
-  <script>
-    Pi.init({ version: "2.0", sandbox: true });
+<h2>Pi Authentication Test</h2>
+<button onclick="loginWithPi()">Sign in with Pi</button>
+<div id="result">Ready</div>
 
-    document.getElementById("loginBtn").addEventListener("click", async () => {
-      try {
-        document.getElementById("status").innerText = "Signing in...";
+<script>
+Pi.init({ version: "2.0", sandbox: true });
 
-        const auth = await Pi.authenticate(
-          ["username"],
-          function() {},
-          function() {}
-        );
+async function loginWithPi() {
+  try {
+    document.getElementById("result").innerText = "Signing in...";
+    const auth = await Pi.authenticate(
+      ["username"],
+      function(payment) {},
+      function(cancelledPayment) {}
+    );
+    document.getElementById("result").innerText =
+      "SUCCESS: " + auth.user.username;
+  } catch (e) {
+    document.getElementById("result").innerText =
+      "ERROR: " + e.message;
+    console.error(e);
+  }
+}
+</script>
 
-        document.getElementById("status").innerText =
-          "SUCCESS: " + auth.user.username;
-      } catch (e) {
-        document.getElementById("status").innerText =
-          "ERROR: " + e.message;
-        console.error(e);
-      }
-    });
-  </script>
 </body>
 </html>
