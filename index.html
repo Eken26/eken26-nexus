@@ -1,23 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Eken26 Pi Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eken26 Pi Verify</title>
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 </head>
 <body>
-  <h2>Eken26 Pi Verification</h2>
-  <button id="pi-login">Sign in with Pi</button>
+  <h2>Pi Authentication Test</h2>
+  <button id="loginBtn">Sign in with Pi</button>
+  <p id="status">Ready</p>
 
   <script>
     Pi.init({ version: "2.0", sandbox: true });
 
-    document.getElementById("pi-login").addEventListener("click", async function () {
+    document.getElementById("loginBtn").addEventListener("click", async function () {
       try {
-        await Pi.authenticate(["username"], function(payment) {});
-        document.body.innerHTML = "<h2>Pi Login Success</h2>";
+        document.getElementById("status").innerText = "Signing in...";
+
+        const auth = await Pi.authenticate(
+          ["username"],
+          function(payment) {},
+          function(cancelledPayment) {}
+        );
+
+        document.getElementById("status").innerText =
+          "SUCCESS: " + auth.user.username;
       } catch (e) {
-        console.log(e);
+        document.getElementById("status").innerText =
+          "ERROR: " + e.message;
+        console.error(e);
       }
     });
   </script>
