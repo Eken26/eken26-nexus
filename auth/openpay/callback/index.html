@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>OpenPay Callback</title>
+</head>
+<body>
+  <p>OpenPay bağlantısı tamamlandı. Geri dönülüyor...</p>
+
+  <script>
+    const query = window.location.search;
+    window.location.replace("/" + query);
+  </script>
+</body>
+</html>
