@@ -1,220 +1,547 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eken26 Nexus</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eken26 Nexus</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<style>
+:root{
+  --bg:#f7f5fb;
+  --card:#ffffff;
+  --text:#25212d;
+  --muted:#756f80;
+  --line:#e8e2ef;
+  --primary:#7040a5;
+  --soft:#efe7f8;
+}
 
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      min-height: 100vh;
-    }
+*{
+  box-sizing:border-box;
+}
 
-    header {
-      background: #1e293b;
-      padding: 20px;
-      text-align: center;
-      border-bottom: 1px solid #334155;
-    }
+body{
+  margin:0;
+  background:var(--bg);
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--text);
+}
 
-    header h1 {
-      color: #38bdf8;
-      margin-bottom: 8px;
-    }
+.app{
+  max-width:760px;
+  margin:0 auto;
+  min-height:100vh;
+  background:var(--bg);
+}
 
-    nav {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 15px;
-    }
+header{
+  background:linear-gradient(135deg,#7040a5,#8a58bd);
+  color:white;
+  padding:24px 22px 28px;
+}
 
-    nav button {
-      background: #334155;
-      color: white;
-      border: none;
-      padding: 12px 18px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
 
-    nav button:hover {
-      background: #0284c7;
-    }
+.logo{
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  background:#ffffff2e;
+  display:grid;
+  place-items:center;
+  font-size:22px;
+  font-weight:bold;
+}
 
-    main {
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 20px;
-    }
+h1{
+  font-size:22px;
+  margin:0;
+}
 
-    section {
-      display: none;
-      background: #1e293b;
-      padding: 30px;
-      border-radius: 15px;
-      border: 1px solid #334155;
-    }
+.brand p{
+  font-size:12px;
+  margin:4px 0 0;
+  opacity:.82;
+}
 
-    section.active {
-      display: block;
-    }
+.search{
+  display:flex;
+  gap:8px;
+  margin-top:22px;
+}
 
-    h2 {
-      color: #38bdf8;
-      margin-bottom: 20px;
-    }
+.search input{
+  flex:1;
+  min-width:0;
+  border:0;
+  border-radius:12px;
+  padding:13px 14px;
+  font-size:14px;
+}
 
-    p {
-      line-height: 1.7;
-      margin-bottom: 15px;
-      color: #cbd5e1;
-    }
+.search button{
+  border:0;
+  border-radius:12px;
+  padding:0 15px;
+  background:white;
+  color:var(--primary);
+  font-weight:bold;
+}
 
-    input {
-      width: 100%;
-      padding: 13px;
-      margin-bottom: 15px;
-      border: 1px solid #475569;
-      border-radius: 8px;
-      background: #0f172a;
-      color: white;
-    }
+main{
+  padding:22px;
+}
 
-    .action {
-      background: #0284c7;
-      color: white;
-      border: none;
-      padding: 13px 22px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
+.page{
+  display:none;
+}
 
-    .action:hover {
-      background: #0369a1;
-    }
+.page.active{
+  display:block;
+}
 
-    .box {
-      background: #0f172a;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 20px;
-      border: 1px solid #334155;
-    }
+.welcome{
+  margin-bottom:22px;
+}
 
-    footer {
-      text-align: center;
-      color: #94a3b8;
-      padding: 30px;
-    }
-  </style>
+h2{
+  font-size:24px;
+  margin:0 0 7px;
+}
+
+.welcome p,
+.feature p,
+.empty p{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
+  margin:0;
+}
+
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:20px 0 12px;
+}
+
+h3{
+  font-size:17px;
+  margin:0;
+}
+
+.section-title span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+
+.card,
+.feature,
+.empty{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+}
+
+.card{
+  padding:16px;
+  cursor:pointer;
+  transition:.15s;
+}
+
+.card:hover{
+  transform:translateY(-2px);
+  border-color:#cdb8e2;
+}
+
+.icon{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:var(--soft);
+  font-size:20px;
+  margin-bottom:12px;
+}
+
+.card strong{
+  display:block;
+  font-size:14px;
+  margin-bottom:5px;
+}
+
+.card small{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.35;
+}
+
+.feature{
+  padding:18px;
+  margin-top:12px;
+}
+
+.feature h3{
+  margin-bottom:8px;
+}
+
+.status{
+  margin-top:18px;
+  padding:10px 12px;
+  border-radius:10px;
+  background:#f1f8f2;
+  color:#367542;
+  font-size:12px;
+  text-align:center;
+}
+
+.page-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.back{
+  border:1px solid var(--line);
+  background:white;
+  color:var(--primary);
+  border-radius:10px;
+  padding:9px 12px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.empty{
+  border-style:dashed;
+  padding:30px 18px;
+  text-align:center;
+}
+
+.empty-icon{
+  font-size:32px;
+  margin-bottom:10px;
+}
+
+.empty h3{
+  margin-bottom:7px;
+}
+
+nav{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  padding:12px 18px 16px;
+  background:white;
+  border-top:1px solid var(--line);
+}
+
+nav button{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  padding:9px 4px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:bold;
+}
+
+nav button.active{
+  background:var(--soft);
+  color:var(--primary);
+}
+
+nav span{
+  display:block;
+  font-size:19px;
+  margin-bottom:4px;
+}
+
+@media(max-width:420px){
+  header{
+    padding:20px 16px 24px;
+  }
+
+  main{
+    padding:16px;
+  }
+
+  .grid{
+    gap:9px;
+  }
+
+  .card{
+    padding:13px;
+  }
+}
+</style>
 </head>
 
 <body>
+<div class="app" id="nexus">
 
-  <header>
-    <h1>Eken26 Nexus</h1>
-    <p>Güvenli dijital bağlantı ve hizmet platformu</p>
+<header>
+  <div class="brand">
+    <div class="logo">N</div>
+    <div>
+      <h1>EKEN26 NEXUS</h1>
+      <p>Günlük yaşamın için yeni nesil platform</p>
+    </div>
+  </div>
 
-    <nav>
-      <button onclick="showSection('home')">Ana Sayfa</button>
-      <button onclick="showSection('about')">Tanıtım</button>
-      <button onclick="showSection('login')">Giriş</button>
-      <button onclick="showSection('payment')">Ödeme</button>
-    </nav>
-  </header>
+  <div class="search">
+    <input
+      id="searchInput"
+      type="search"
+      placeholder="Nexus'ta ara..."
+      aria-label="Nexus'ta ara"
+    >
+    <button id="searchButton" type="button">Ara</button>
+  </div>
+</header>
 
-  <main>
+<main>
 
-    <section id="home" class="active">
-      <h2>Ana Sayfa</h2>
-      <p>Eken26 Nexus platformuna hoş geldiniz.</p>
-      <p>Buradan tanıtım bilgilerine, giriş ekranına ve ödeme bölümüne ulaşabilirsiniz.</p>
+<section class="page active" data-page="home">
+  <div class="welcome">
+    <h2>Hoş geldin</h2>
+    <p>
+      Eken26 Nexus’un ana sayfası.
+      Kategorilerden birini seçerek başlayabilirsin.
+    </p>
+  </div>
 
-      <div class="box">
-        <h3>Platform Özellikleri</h3>
-        <p>• Basit ve kullanışlı arayüz</p>
-        <p>• Giriş sistemi</p>
-        <p>• Ödeme bölümü</p>
-        <p>• Mobil uyumlu tasarım</p>
-      </div>
-    </section>
+  <div class="section-title">
+    <h3>Kategoriler</h3>
+    <span>Keşfet</span>
+  </div>
 
-    <section id="about">
-      <h2>Tanıtım</h2>
-      <p>Eken26 Nexus, dijital hizmetlerin tek bir platform üzerinden sunulması amacıyla hazırlanmıştır.</p>
-      <p>Platformun tasarımı sade, hızlı ve mobil cihazlarla uyumlu olacak şekilde oluşturulmuştur.</p>
-    </section>
+  <div class="grid">
+    <div class="card" data-category="Gıda" data-icon="🍽️">
+      <div class="icon">🍽️</div>
+      <strong>Gıda</strong>
+      <small>Yiyecek, içecek ve mutfak ürünleri</small>
+    </div>
 
-    <section id="login">
-      <h2>Giriş Yap</h2>
+    <div class="card" data-category="Giyim" data-icon="👕">
+      <div class="icon">👕</div>
+      <strong>Giyim</strong>
+      <small>Kıyafet, aksesuar ve kişisel stil</small>
+    </div>
 
-      <input type="email" id="email" placeholder="E-posta adresiniz">
-      <input type="password" id="password" placeholder="Şifreniz">
+    <div class="card" data-category="Elektronik" data-icon="📱">
+      <div class="icon">📱</div>
+      <strong>Elektronik</strong>
+      <small>Teknoloji ve elektronik ürünler</small>
+    </div>
 
-      <button class="action" onclick="loginUser()">Giriş Yap</button>
+    <div class="card" data-category="Ev & Yaşam" data-icon="🏠">
+      <div class="icon">🏠</div>
+      <strong>Ev &amp; Yaşam</strong>
+      <small>Ev ihtiyaçları ve yaşam ürünleri</small>
+    </div>
 
-      <p id="loginMessage"></p>
-    </section>
+    <div class="card" data-category="Otomotiv" data-icon="🚗">
+      <div class="icon">🚗</div>
+      <strong>Otomotiv</strong>
+      <small>Araç, bakım ve otomotiv hizmetleri</small>
+    </div>
 
-    <section id="payment">
-      <h2>Ödeme Bölümü</h2>
-      <p>Ödeme işlemi için aşağıdaki butonu kullanabilirsiniz.</p>
+    <div class="card" data-category="Turizm" data-icon="🧳">
+      <div class="icon">🧳</div>
+      <strong>Turizm</strong>
+      <small>Gezi, konaklama ve keşif</small>
+    </div>
+  </div>
 
-      <div class="box">
-        <h3>Hizmet Ödemesi</h3>
-        <p>Ödeme sistemi daha sonra güvenli ödeme altyapısına bağlanacaktır.</p>
-        <button class="action" onclick="startPayment()">Ödemeye Devam Et</button>
-        <p id="paymentMessage"></p>
-      </div>
-    </section>
+  <div class="feature">
+    <h3>Nexus’un temeli hazır</h3>
+    <p>
+      Bu ilk sürümde sayfa geçişleri, arama alanı ve kategori yapısı çalışır.
+      Gerçek içerikler sonraki aşamada eklenecek.
+    </p>
+  </div>
 
-  </main>
+  <div class="status" id="status">Uygulama hazır.</div>
+</section>
 
-  <footer>
-    © 2026 Eken26 Nexus
-  </footer>
+<section class="page" data-page="category">
+  <div class="page-title">
+    <button class="back" id="backButton" type="button">← Geri</button>
+    <h2 id="categoryTitle">Kategori</h2>
+  </div>
 
-  <script>
-    function showSection(sectionId) {
-      const sections = document.querySelectorAll("section");
+  <div class="empty">
+    <div class="empty-icon" id="categoryIcon">📦</div>
+    <h3 id="categoryHeading">Kategori hazırlanıyor</h3>
+    <p id="categoryDescription">
+      Bu bölüm Nexus’un sonraki sürümünde gerçek içeriklerle doldurulacak.
+    </p>
+  </div>
+</section>
 
-      sections.forEach(function(section) {
-        section.classList.remove("active");
-      });
+<section class="page" data-page="discover">
+  <div class="page-title">
+    <h2>Keşfet</h2>
+  </div>
 
-      document.getElementById(sectionId).classList.add("active");
+  <div class="empty">
+    <div class="empty-icon">🔎</div>
+    <h3>Keşfet bölümü</h3>
+    <p>
+      Yeni ürünleri, hizmetleri ve içerikleri burada keşfedeceksin.
+    </p>
+  </div>
+</section>
+
+<section class="page" data-page="account">
+  <div class="page-title">
+    <h2>Hesabım</h2>
+  </div>
+
+  <div class="empty">
+    <div class="empty-icon">👤</div>
+    <h3>Hesap bölümü</h3>
+    <p>
+      Kullanıcı hesabı ve giriş sistemi sonraki aşamada eklenecek.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<nav aria-label="Ana menü">
+  <button class="active" data-nav="home" type="button">
+    <span>⌂</span>
+    Ana Sayfa
+  </button>
+
+  <button data-nav="discover" type="button">
+    <span>◉</span>
+    Keşfet
+  </button>
+
+  <button data-nav="account" type="button">
+    <span>●</span>
+    Hesabım
+  </button>
+</nav>
+
+</div>
+
+<script>
+(function(){
+
+  const pages = document.querySelectorAll(".page");
+  const navButtons = document.querySelectorAll("nav button");
+  const status = document.getElementById("status");
+  const input = document.getElementById("searchInput");
+
+  function showPage(name){
+    pages.forEach(function(page){
+      page.classList.toggle(
+        "active",
+        page.dataset.page === name
+      );
+    });
+
+    navButtons.forEach(function(button){
+      button.classList.toggle(
+        "active",
+        button.dataset.nav === name
+      );
+    });
+  }
+
+  document.querySelectorAll("[data-category]").forEach(function(card){
+
+    card.addEventListener("click", function(){
+
+      const name = card.dataset.category;
+
+      document.getElementById("categoryTitle").textContent = name;
+      document.getElementById("categoryHeading").textContent =
+        name + " bölümü";
+      document.getElementById("categoryIcon").textContent =
+        card.dataset.icon;
+      document.getElementById("categoryDescription").textContent =
+        name +
+        " bölümü hazır. Gerçek içerikler sonraki aşamada eklenecek.";
+
+      showPage("category");
+    });
+
+  });
+
+  document.getElementById("backButton").addEventListener(
+    "click",
+    function(){
+      showPage("home");
     }
+  );
 
-    function loginUser() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const message = document.getElementById("loginMessage");
+  navButtons.forEach(function(button){
 
-      if (email === "" || password === "") {
-        message.textContent = "Lütfen e-posta ve şifre alanlarını doldurun.";
-        message.style.color = "#f87171";
-      } else {
-        message.textContent = "Giriş bilgileri alındı. Gerçek giriş sistemi daha sonra bağlanacaktır.";
-        message.style.color = "#4ade80";
+    button.addEventListener("click", function(){
+
+      showPage(button.dataset.nav);
+
+      if(status){
+        status.textContent =
+          button.dataset.nav === "home"
+          ? "Ana sayfa açıldı."
+          : button.textContent.trim() + " açıldı.";
       }
+
+    });
+
+  });
+
+  function search(){
+
+    const value = input.value.trim();
+
+    if(!value){
+      showPage("home");
+      status.textContent = "Aramak istediğin kelimeyi yaz.";
+      input.focus();
+      return;
     }
 
-    function startPayment() {
-      document.getElementById("paymentMessage").textContent =
-        "Ödeme altyapısı bağlantısı daha sonra yapılacaktır.";
+    status.textContent =
+      '"' +
+      value +
+      '" için arama alanı hazır. Gerçek arama sistemi sonraki aşamada eklenecek.';
+  }
+
+  document.getElementById("searchButton").addEventListener(
+    "click",
+    search
+  );
+
+  input.addEventListener("keydown", function(event){
+
+    if(event.key === "Enter"){
+      search();
     }
-  </script>
+
+  });
+
+})();
+</script>
 
 </body>
 </html>
