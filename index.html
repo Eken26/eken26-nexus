@@ -25,13 +25,17 @@ a{color:#f5c518}
 </style>
 </head>
 <body>
+
 <h1>EKEN26 NEXUS</h1>
 <p class="sub">Pi ile Güvenli Alışveriş</p>
+
 <div id="status">⏳ Pi SDK kontrol ediliyor...</div>
+
 <div class="box">
 <button class="btn-yellow" onclick="loginPi()">🔐 Pi ile Giriş Yap</button>
 <div id="userInfo" style="text-align:center;margin-top:8px;color:#aaa">Henüz giriş yapılmadı</div>
 </div>
+
 <div class="box">
 <h3>➕ Yeni Ürün Ekle</h3>
 <input id="pName" placeholder="Ürün adı örn: Tişört">
@@ -40,33 +44,29 @@ a{color:#f5c518}
 <button class="btn-green" onclick="addProduct()">Ürünü Kaydet</button>
 <button class="btn-red" onclick="clearProducts()">🗑 Tüm Ürünleri Sil</button>
 </div>
+
 <div class="box">
 <h3>🛍 Ürünler</h3>
 <div id="list"><p style="color:#aaa">Henüz ürün yok. Yukarıdan ekle.</p></div>
 </div>
+
 <div class="box" id="privacy">
 <h3>🔒 Gizlilik Politikası</h3>
 <p><small>EKEN26 NEXUS, Pi Network kullanıcı adınız dışında kişisel veri toplamaz. Ödeme işlemleri Pi Network üzerinden güvenli şekilde yapılır. Bilgileriniz 3. kişilerle paylaşılmaz.</small></p>
 </div>
+
 <div class="box" id="terms">
 <h3>📜 Kullanım Şartları</h3>
 <p><small>Bu siteden yapılan tüm ödemeler Pi ile yapılır. Dijital ürünlerde iade yapılmaz. Ürünleri satın almadan önce açıklamayı okuyunuz. EKEN26 NEXUS tüm kuralları değiştirme hakkını saklı tutar.</small></p>
 </div>
+
 <script>
 let products = JSON.parse(localStorage.getItem('nexus_products') || '[]');
 let currentUser = null;
 
 window.onload = function(){
-  // DÜZELTME: Pi var mı diye önce kontrol ediyoruz
-  if (typeof Pi === 'undefined') {
-    document.getElementById('status').innerHTML = "❌ Pi SDK bulunamadı - Pi Browser ile gir";
-    document.getElementById('status').style.background = "#7f0000";
-    render();
-    return;
-  }
   try{
-    // DÜZELTME: sandbox:false -> sandbox:true yapıldı, testte çalışması için
-    Pi.init({version:"2.0", sandbox:true});
+    Pi.init({version:"2.0", sandbox:false});
     document.getElementById('status').innerHTML = "✅ Pi SDK bulundu - Satın Al çalışıyor";
     document.getElementById('status').style.background = "#1b5e20";
   }catch(e){
@@ -83,10 +83,9 @@ async function loginPi(){
     currentUser = auth.user;
     document.getElementById('userInfo').innerHTML = "Hoşgeldin: @" + currentUser.username;
     alert("Giriş başarılı: @" + currentUser.username);
-  }catch(e){
-    alert("Giriş olmadı. Pi Browser ile gir ve tekrar dene.");
-  }
+  }catch(e){ alert("Giriş olmadı. Pi Browser ile gir ve tekrar dene."); }
 }
+
 function addProduct(){
   const name = document.getElementById('pName').value.trim();
   const price = parseFloat(document.getElementById('pPrice').value);
@@ -94,41 +93,15 @@ function addProduct(){
   if(!name || !price){ alert("Ad ve fiyat yaz!"); return; }
   products.push({name, price, desc, id: Date.now()});
   localStorage.setItem('nexus_products', JSON.stringify(products));
-  document.getElementById('pName').value="";
-  document.getElementById('pPrice').value="";
-  document.getElementById('pDesc').value="";
-  render();
-  alert("Ürün eklendi!");
+  document.getElementById('pName').value=""; document.getElementById('pPrice').value=""; document.getElementById('pDesc').value="";
+  render(); alert("Ürün eklendi!");
 }
+
 function clearProducts(){
   if(!confirm("Tüm ürünler silinsin mi?")) return;
-  products=[];
-  localStorage.removeItem('nexus_products');
-  render();
+  products=[]; localStorage.removeItem('nexus_products'); render();
 }
+
 function render(){
   const list = document.getElementById('list');
-  if(products.length===0){ list.innerHTML="<p style='color:#aaa'>Henüz ürün yok. Yukarıdan ekle.</p>"; return; }
-  list.innerHTML = products.map(p=>`
-    <div class="product">
-      <h3>${p.name}</h3>
-      <p>${p.desc || ''}</p>
-      <p><b>${p.price} Pi</b></p>
-      <button class="btn-yellow" onclick="buyProduct('${p.id}','${p.name}',${p.price})">🛒 Pi ile Satın Al</button>
-    </div>`).join('');
-}
-async function buyProduct(id, name, price){
-  if(!currentUser){ alert("Önce Pi ile Giriş Yap'a bas!"); return; }
-  try{
-    await Pi.createPayment({ amount: price, memo: "NEXUS - " + name, metadata: {productId: id, productName: name} }, {
-      onReadyForServerApproval: function(paymentId){ console.log("approval",paymentId); },
-      onReadyForServerCompletion: function(paymentId, txid){ alert("Ödeme tamamlandı! TX: "+txid); },
-      onCancel: function(paymentId){ alert("Ödeme iptal edildi"); },
-      onError: function(error, payment){ alert("Ödeme hatası: "+error); }
-    });
-  }catch(e){ alert("Ödeme başlatılamadı. Pi Browser'da mısın kontrol et."); }
-}
-function onIncompletePaymentFound(payment){ console.log("incomplete", payment); }
-</script>
-</body>
-</html>
+  if(products.length===
