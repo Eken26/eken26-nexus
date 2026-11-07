@@ -3,175 +3,97 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EKEN26 NEXUS</title>
+<title>Eken26 Nexus Tr</title>
 <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 <style>
 *{box-sizing:border-box;font-family:Arial,sans-serif}
-body{margin:0;background:#0f0f1a;color:#fff;padding:16px}
-h1{text-align:center;color:#f5c518;margin:10px 0 2px}
-p.sub{text-align:center;color:#aaa;margin:0 0 14px}
-.box{background:#1c1c2e;border:1px solid #333;border-radius:14px;padding:14px;margin-bottom:14px}
-#status{font-weight:bold;text-align:center;padding:10px;border-radius:10px;background:#222}
-button{width:100%;padding:13px;border:none;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:8px}
-.btn-yellow{background:#f5c518;color:#000}
-.btn-green{background:#00c853;color:#fff}
-.btn-red{background:#e53935;color:#fff}
-.btn-blue{background:#2196f3;color:#fff}
-input,textarea{width:100%;padding:12px;margin-top:8px;border-radius:10px;border:1px solid #444;background:#111;color:#fff;font-size:15px}
-.product{background:#262640;border-radius:12px;padding:12px;margin-bottom:10px}
-.product h3{margin:0 0 6px}
-.product p{margin:4px 0;color:#ccc}
-small{color:#888}
-a{color:#f5c518}
+body{margin:0;background:#f5f5f5;color:#111;padding:0}
+.top{background:#fff;padding:12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ddd}
+.top b{font-size:20px}
+.card{background:#fff;margin:14px;border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.price{color:#7c3aed;font-size:32px;font-weight:bold}
+button{width:100%;padding:14px;border:none;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:10px}
+.btn-buy{background:#7c3aed;color:#fff}
+.btn-cancel{background:#fff;color:#111;border:1px solid #ddd}
+#status{margin:14px;padding:12px;border-radius:10px;text-align:center;font-weight:bold;background:#fee2e2;color:#991b1b}
+input,textarea{width:100%;padding:12px;margin-top:8px;border-radius:10px;border:1px solid #ddd;font-size:15px}
 </style>
 </head>
 <body>
-<h1>EKEN26 NEXUS</h1>
-<p class="sub">Pi ile Güvenli Alışveriş</p>
-<div id="status">⏳ Pi SDK kontrol ediliyor...</div>
+<div class="top"><b>π Eken26 Nexus Tr</b><span>Logout</span></div>
+<div id="status">⏳ Pi SDK bekleniyor...</div>
 
-<div class="box">
-<button class="btn-yellow" onclick="loginPi()">🔐 Pi ile Giriş Yap</button>
-<div id="userInfo" style="text-align:center;margin-top:8px;color:#aaa">Henüz giriş yapılmadı</div>
+<div class="card">
+<h2>Eken26 Nexus Oto Galeri, al sat takas, temiz ikinci el araç</h2>
+<p>Eken26 Nexus Oto Galeri, al sat takas hepsi var. Temiz ikinci el araç alıyoruz, satıyoruz, takas...</p>
+<div class="price">15π</div>
+<p>Durum: New</p>
+<p>📍 Eskişehir Türkiye</p>
+<p><b>mustafaeken26</b> ⭐⭐⭐⭐⭐ (0)</p>
+<button class="btn-buy" onclick="buyProduct()">15π ile Satın Al</button>
+<button class="btn-cancel">İptal Et</button>
 </div>
 
-<div class="box">
+<div class="card">
 <h3>➕ Yeni Ürün Ekle</h3>
-<input id="pName" placeholder="Ürün adı örn: Tişört">
-<input id="pPrice" type="number" step="0.01" placeholder="Fiyat Pi örn: 1.5">
-<textarea id="pDesc" placeholder="Ürün açıklaması"></textarea>
-<button class="btn-green" onclick="addProduct()">Ürünü Kaydet</button>
-<button class="btn-red" onclick="clearProducts()">🗑 Tüm Ürünleri Sil</button>
+<input id="pName" placeholder="Ürün adı">
+<input id="pPrice" type="number" placeholder="Fiyat Pi">
+<textarea id="pDesc" placeholder="Açıklama"></textarea>
+<button class="btn-buy" style="background:#00c853" onclick="addProduct()">Ürünü Kaydet</button>
 </div>
-
-<div class="box">
-<h3>🛍 Ürünler</h3>
-<div id="list"><p style="color:#aaa">Henüz ürün yok. Yukarıdan ekle.</p></div>
-</div>
-
-<div class="box">
-<h3>🔒 Gizlilik Politikası</h3>
-<p><small>EKEN26 NEXUS, Pi Network kullanıcı adınız dışında kişisel veri toplamaz. Ödeme işlemleri Pi Network üzerinden güvenli şekilde yapılır. Bilgileriniz 3. kişilerle paylaşılmaz.</small></p>
-</div>
-
-<div class="box">
-<h3>📜 Kullanım Şartları</h3>
-<p><small>Bu siteden yapılan tüm ödemeler Pi ile yapılır. Dijital ürünlerde iade yapılmaz. Ürünleri satın almadan önce açıklamayı okuyunuz. EKEN26 NEXUS tüm kuralları değiştirme hakkını saklı tutar.</small></p>
-</div>
+<div id="list"></div>
 
 <script>
-let products = JSON.parse(localStorage.getItem('nexus_products') || '[]');
 let currentUser = null;
+function onIncompletePaymentFound(p){ console.log(p); }
 
-function onIncompletePaymentFound(payment) {
-  console.log("Tamamlanmamış ödeme:", payment);
-}
-
-window.onload = function(){
-  if (typeof Pi !== 'undefined') {
-    try {
+function checkPi(tryCount){
+  if(typeof Pi !== 'undefined'){
+    try{
       Pi.init({version:"2.0", sandbox:false});
       document.getElementById('status').innerHTML = "✅ Pi SDK bulundu - Satın Al çalışıyor";
-      document.getElementById('status').style.background = "#1b5e20";
-    } catch(e) {
-      document.getElementById('status').innerHTML = "❌ Pi SDK hatası: " + e.message;
-      document.getElementById('status').style.background = "#7f0000";
+      document.getElementById('status').style.background = "#dcfce7";
+      document.getElementById('status').style.color = "#166534";
+    }catch(e){
+      document.getElementById('status').innerHTML = "❌ Pi hatası: "+e.message;
     }
-  } else {
-    document.getElementById('status').innerHTML = "❌ Pi SDK bulunamadı - Lütfen Pi Browser ile girin";
-    document.getElementById('status').style.background = "#7f0000";
+    return;
   }
-  render();
-};
+  if(tryCount < 20){
+    setTimeout(()=>checkPi(tryCount+1), 500);
+  } else {
+    document.getElementById('status').innerHTML = "❌ Pi SDK bulunamadı - Lütfen Pi Browser kullanın.";
+  }
+}
+window.onload = function(){ checkPi(0); render(); };
 
 async function loginPi(){
-  if (typeof Pi === 'undefined') {
-    alert("Lütfen Pi Browser ile girin!");
-    return;
-  }
+  if(typeof Pi === 'undefined'){ alert("Pi Browser ile gir!"); return; }
   try{
-    const scopes = ['username','payments'];
-    const auth = await Pi.authenticate(scopes, onIncompletePaymentFound);
+    const auth = await Pi.authenticate(['username','payments'], onIncompletePaymentFound);
     currentUser = auth.user;
-    document.getElementById('userInfo').innerHTML = "Hoşgeldin: @" + currentUser.username;
-    alert("Giriş başarılı: @" + currentUser.username);
-  }catch(e){
-    alert("Giriş olmadı. Pi Browser ile gir ve tekrar dene.");
-  }
+    alert("Hoşgeldin @"+currentUser.username);
+  }catch(e){ alert("Giriş olmadı"); }
 }
-
 function addProduct(){
-  const name = document.getElementById('pName').value.trim();
-  const price = parseFloat(document.getElementById('pPrice').value);
-  const desc = document.getElementById('pDesc').value.trim();
-  if(!name || !price){ alert("Ad ve fiyat yaz!"); return; }
-  products.push({name, price, desc, id: Date.now()});
-  localStorage.setItem('nexus_products', JSON.stringify(products));
-  document.getElementById('pName').value="";
-  document.getElementById('pPrice').value="";
-  document.getElementById('pDesc').value="";
-  render();
-  alert("Ürün eklendi!");
+  const n=document.getElementById('pName').value;
+  const pr=document.getElementById('pPrice').value;
+  if(!n||!pr){ alert("Ad ve fiyat yaz!"); return; }
+  alert("Ürün eklendi: "+n);
 }
-
-function clearProducts(){
-  if(!confirm("Tüm ürünler silinsin mi?")) return;
-  products=[];
-  localStorage.removeItem('nexus_products');
-  render();
-}
-
-function deleteProduct(id){
-  products = products.filter(p => p.id !== id);
-  localStorage.setItem('nexus_products', JSON.stringify(products));
-  render();
-}
-
-async function buyProduct(id){
-  const p = products.find(x => x.id === id);
-  if(!p) return;
-  if (typeof Pi === 'undefined') {
-    alert("Lütfen Pi Browser ile girin!");
-    return;
-  }
-  if(!currentUser){
-    alert("Önce Pi ile Giriş Yap!");
-    return;
-  }
+async function buyProduct(){
+  if(typeof Pi === 'undefined'){ alert("Pi SDK yok, sayfayı yenile!"); return; }
+  if(!currentUser){ await loginPi(); if(!currentUser) return; }
   try{
-    await Pi.createPayment({
-      amount: p.price,
-      memo: "EKEN26 NEXUS - " + p.name,
-      metadata: { productId: p.id, productName: p.name }
-    }, {
-      onReadyForServerApproval: function(paymentId){ console.log("Approval:", paymentId); },
-      onReadyForServerCompletion: function(paymentId, txid){ alert("Ödeme başarılı! Tx: " + txid); },
-      onCancel: function(paymentId){ alert("Ödeme iptal edildi."); },
-      onError: function(error, payment){ alert("Ödeme hatası: " + error); }
+    await Pi.createPayment({amount:15, memo:"Eken26 Nexus Oto Galeri", metadata:{product:"oto-galeri"}}, {
+      onReadyForServerApproval:function(id){ console.log(id); },
+      onReadyForServerCompletion:function(id,txid){ alert("Ödeme başarılı! "+txid); },
+      onCancel:function(){ alert("İptal edildi"); },
+      onError:function(e){ alert("Hata: "+e); }
     });
-  }catch(e){
-    alert("Ödeme başlatılamadı: " + e.message);
-  }
+  }catch(e){ alert("Ödeme başlamadı: "+e.message); }
 }
-
-function render(){
-  const list = document.getElementById('list');
-  if(products.length === 0){
-    list.innerHTML = '<p style="color:#aaa">Henüz ürün yok. Yukarıdan ekle.</p>';
-    return;
-  }
-  list.innerHTML = "";
-  products.forEach(p => {
-    const div = document.createElement('div');
-    div.className = 'product';
-    div.innerHTML = '<h3>' + p.name + '</h3>' +
-      '<p>💰 ' + p.price + ' Pi</p>' +
-      '<p>' + (p.desc || '') + '</p>' +
-      '<button class="btn-blue" onclick="buyProduct(' + p.id + ')">🛒 ' + p.price + ' Pi ile Satın Al</button>' +
-      '<button class="btn-red" onclick="deleteProduct(' + p.id + ')">Sil</button>';
-    list.appendChild(div);
-  });
-}
+function render(){}
 </script>
 </body>
 </html>
