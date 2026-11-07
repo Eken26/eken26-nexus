@@ -5,23 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Eken26 Nexus Tr</title>
 <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+<script>
+  // RESMI KALIP: Scriptin hemen altında, beklemeden init et
+  Pi.init({ version: "2.0" });
+</script>
 <style>
 *{box-sizing:border-box;font-family:Arial,sans-serif}
-body{margin:0;background:#f5f5f5;color:#111;padding:0}
-.top{background:#fff;padding:12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ddd}
-.top b{font-size:20px}
-.card{background:#fff;margin:14px;border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+body{margin:0;background:#f5f5f5;color:#111}
+.top{background:#fff;padding:12px;display:flex;justify-content:space-between;border-bottom:1px solid #ddd}
+.card{background:#fff;margin:14px;border-radius:16px;padding:16px}
 .price{color:#7c3aed;font-size:32px;font-weight:bold}
-button{width:100%;padding:14px;border:none;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:10px}
+button{width:100%;padding:14px;border:none;border-radius:10px;font-weight:bold;font-size:16px;margin-top:10px;cursor:pointer}
 .btn-buy{background:#7c3aed;color:#fff}
-.btn-cancel{background:#fff;color:#111;border:1px solid #ddd}
-#status{margin:14px;padding:12px;border-radius:10px;text-align:center;font-weight:bold;background:#fee2e2;color:#991b1b}
-input,textarea{width:100%;padding:12px;margin-top:8px;border-radius:10px;border:1px solid #ddd;font-size:15px}
+.btn-cancel{background:#fff;border:1px solid #ddd}
+#status{margin:14px;padding:12px;border-radius:10px;text-align:center;font-weight:bold}
+.ok{background:#dcfce7;color:#166534}
+.no{background:#fee2e2;color:#991b1b}
 </style>
 </head>
 <body>
 <div class="top"><b>π Eken26 Nexus Tr</b><span>Logout</span></div>
-<div id="status">⏳ Pi SDK bekleniyor...</div>
+<div id="status" class="no">⏳ Kontrol ediliyor...</div>
 
 <div class="card">
 <h2>Eken26 Nexus Oto Galeri, al sat takas, temiz ikinci el araç</h2>
@@ -34,66 +38,39 @@ input,textarea{width:100%;padding:12px;margin-top:8px;border-radius:10px;border:
 <button class="btn-cancel">İptal Et</button>
 </div>
 
-<div class="card">
-<h3>➕ Yeni Ürün Ekle</h3>
-<input id="pName" placeholder="Ürün adı">
-<input id="pPrice" type="number" placeholder="Fiyat Pi">
-<textarea id="pDesc" placeholder="Açıklama"></textarea>
-<button class="btn-buy" style="background:#00c853" onclick="addProduct()">Ürünü Kaydet</button>
-</div>
-<div id="list"></div>
-
 <script>
-let currentUser = null;
-function onIncompletePaymentFound(p){ console.log(p); }
+const Pi = window.Pi;
+function onIncompletePaymentFound(payment){ console.log(payment); }
 
-function checkPi(tryCount){
-  if(typeof Pi !== 'undefined'){
-    try{
-      Pi.init({version:"2.0", sandbox:false});
-      document.getElementById('status').innerHTML = "✅ Pi SDK bulundu - Satın Al çalışıyor";
-      document.getElementById('status').style.background = "#dcfce7";
-      document.getElementById('status').style.color = "#166534";
-    }catch(e){
-      document.getElementById('status').innerHTML = "❌ Pi hatası: "+e.message;
-    }
-    return;
-  }
-  if(tryCount < 20){
-    setTimeout(()=>checkPi(tryCount+1), 500);
+// Sayfa açılınca kontrol et - ama Pi.init yukarıda zaten yapıldı
+document.addEventListener("DOMContentLoaded", function(){
+  const el = document.getElementById('status');
+  if (typeof Pi !== 'undefined' && Pi) {
+    el.className = "ok";
+    el.style.margin="14px"; el.style.padding="12px"; el.style.borderRadius="10px"; el.style.textAlign="center"; el.style.fontWeight="bold";
+    el.innerHTML = "✅ Pi SDK bulundu - Satın Al çalışıyor";
   } else {
-    document.getElementById('status').innerHTML = "❌ Pi SDK bulunamadı - Lütfen Pi Browser kullanın.";
+    el.innerHTML = "❌ Pi SDK bulunamadı - Lütfen Pi Browser kullanın.";
   }
-}
-window.onload = function(){ checkPi(0); render(); };
+});
 
-async function loginPi(){
-  if(typeof Pi === 'undefined'){ alert("Pi Browser ile gir!"); return; }
-  try{
-    const auth = await Pi.authenticate(['username','payments'], onIncompletePaymentFound);
-    currentUser = auth.user;
-    alert("Hoşgeldin @"+currentUser.username);
-  }catch(e){ alert("Giriş olmadı"); }
-}
-function addProduct(){
-  const n=document.getElementById('pName').value;
-  const pr=document.getElementById('pPrice').value;
-  if(!n||!pr){ alert("Ad ve fiyat yaz!"); return; }
-  alert("Ürün eklendi: "+n);
-}
 async function buyProduct(){
-  if(typeof Pi === 'undefined'){ alert("Pi SDK yok, sayfayı yenile!"); return; }
-  if(!currentUser){ await loginPi(); if(!currentUser) return; }
   try{
-    await Pi.createPayment({amount:15, memo:"Eken26 Nexus Oto Galeri", metadata:{product:"oto-galeri"}}, {
-      onReadyForServerApproval:function(id){ console.log(id); },
-      onReadyForServerCompletion:function(id,txid){ alert("Ödeme başarılı! "+txid); },
-      onCancel:function(){ alert("İptal edildi"); },
-      onError:function(e){ alert("Hata: "+e); }
+    const scopes = ['username','payments'];
+    const auth = await Pi.authenticate(scopes, onIncompletePaymentFound);
+    alert("Hoşgeldin @" + auth.user.username);
+    Pi.createPayment({
+      amount: 15,
+      memo: "Eken26 Nexus Oto Galeri",
+      metadata: { product: "oto-galeri" }
+    }, {
+      onReadyForServerApproval: function(id){ console.log(id); },
+      onReadyForServerCompletion: function(id, txid){ alert("Ödeme başarılı! " + txid); },
+      onCancel: function(){ alert("İptal edildi"); },
+      onError: function(e){ alert("Hata: " + e); }
     });
-  }catch(e){ alert("Ödeme başlamadı: "+e.message); }
+  }catch(e){ alert("Giriş / Ödeme olmadı: " + e.message); }
 }
-function render(){}
 </script>
 </body>
 </html>
