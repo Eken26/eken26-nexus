@@ -23,7 +23,6 @@ button.secondary{background:#eee;color:#222}
 .status{padding:12px;border-radius:10px;background:#fef3c7}
 .ok{background:#dcfce7}
 .err{background:#fee2e2}
-.hide{display:none}
 label{font-weight:bold;font-size:14px}
 </style>
 </head>
@@ -45,8 +44,8 @@ Pi SDK kontrol ediliyor…
 <button id="login">Pi ile giriş yap</button>
 <p id="user" class="small">Henüz giriş yapılmadı.</p>
 <p class="small">
-Bu sürümde ödeme tahsilatı devre dışıdır.
-Gerçek ödeme için güvenli sunucu entegrasyonu gereklidir.
+Ağ: Mainnet.
+Gerçek Pi ödemeleri için güvenli sunucu entegrasyonu gereklidir.
 </p>
 </section>
 
@@ -71,7 +70,6 @@ Gerçek ödeme için güvenli sunucu entegrasyonu gereklidir.
 
 <section class="panel">
 <h2>Ürün ekle</h2>
-
 <form id="form">
 
 <label>Ürün adı
@@ -83,8 +81,7 @@ Gerçek ödeme için güvenli sunucu entegrasyonu gereklidir.
 </label>
 
 <label>Pi fiyatı
-<input id="price" type="number" min="0.01"
-max="1000000" step="0.01" required>
+<input id="price" type="number" min="0.01" max="1000000" step="0.01" required>
 </label>
 
 <label>Kategori
@@ -110,8 +107,8 @@ max="1000000" step="0.01" required>
 </form>
 
 <p class="small">
-Ürünler yalnızca bu tarayıcıda saklanır;
-başka kullanıcılara görünmez.
+Ürünler yalnızca bu tarayıcıda saklanır.
+Başka kullanıcılara görünmez.
 Tarayıcı verileri silinirse kaybolabilir.
 </p>
 </section>
@@ -150,12 +147,11 @@ function status(msg,kind=''){
 }
 
 function initPi(attempt=0){
-
  if(window.Pi&&typeof window.Pi.init==='function'){
   try{
-   window.Pi.init({version:'2.0',sandbox:true});
+   window.Pi.init({version:'2.0',sandbox:false});
    piReady=true;
-   status('Pi SDK bulundu. Testnet girişini deneyebilirsin.','ok');
+   status('Pi SDK bulundu. Mainnet girişini deneyebilirsin.','ok');
   }catch(e){
    status('Pi SDK başlatılamadı: '+e.message,'err');
   }
@@ -170,28 +166,23 @@ function initPi(attempt=0){
 window.addEventListener('load',()=>initPi());
 
 $('login').addEventListener('click',async()=>{
-
  if(!piReady){
   status('Önce Pi SDK yüklenmeli.','err');
   return;
  }
-
  try{
   const auth=await window.Pi.authenticate(
    ['username'],
    p=>console.log('Tamamlanmamış ödeme bildirimi',p?.identifier||'')
   );
-
   $('user').textContent='Giriş: @'+(auth?.user?.username||'Pi kullanıcısı');
   status('Pi kullanıcı girişi başarılı. Ödemeler henüz etkin değil.','ok');
-
  }catch(e){
   status('Giriş hatası: '+(e?.message||String(e)),'err');
  }
 });
 
 function render(){
-
  const q=$('search').value.trim().toLocaleLowerCase('tr');
  const cat=$('filter').value;
 
@@ -211,7 +202,6 @@ function render(){
  }
 
  for(const x of list){
-
   const c=document.createElement('article');
   c.className='card';
 
@@ -244,7 +234,6 @@ $('search').addEventListener('input',render);
 $('filter').addEventListener('change',render);
 
 $('form').addEventListener('submit',e=>{
-
  e.preventDefault();
 
  const price=Number($('price').value);
