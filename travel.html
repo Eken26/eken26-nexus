@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EKEN26 NEXUS TR | Turizm ve Seyahat</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f3f5f7;
+    color: #17202a;
+}
+
+.header {
+    background: linear-gradient(135deg, #006b63, #008b83);
+    color: white;
+    text-align: center;
+    padding: 35px 20px;
+}
+
+.header .title {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.header p {
+    margin-top: 12px;
+    font-size: 17px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
+
+.back {
+    display: inline-block;
+    background: white;
+    color: #006b63;
+    text-decoration: none;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 10px #ddd;
+}
+
+.profile, .card, .info {
+    background: white;
+    padding: 24px;
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+    margin-bottom: 22px;
+}
+
+.profile h2, .info h2 {
+    margin-top: 0;
+}
+
+.profile p, .info p {
+    line-height: 1.7;
+    color: #555;
+}
+
+.services {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.card-icon {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    font-size: 21px;
+    margin: 8px 0 12px;
+}
+
+.card p {
+    color: #555;
+    line-height: 1.6;
+}
+
+.card a {
+    display: inline-block;
+    margin-top: 12px;
+    color: #006b63;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.button {
+    display: inline-block;
+    background: #006b63;
+    color: white;
+    text-decoration: none;
+    padding: 13px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.button.secondary {
+    background: #008b83;
+}
+
+.notice {
+    background: #e0f2f1;
+    padding: 15px;
+    border-radius: 12px;
+    color: #006b63;
+    line-height: 1.6;
+}
+
+footer {
+    text-align: center;
+    padding: 30px 15px;
+    color: #666;
+    line-height: 1.8;
+}
+
+@media(max-width:600px) {
+    .header .title {
+        font-size: 25px;
+    }
+
+    .services {
+        grid-template-columns: 1fr;
+    }
+
+    .profile, .card, .info {
+        padding: 19px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="title">
+        π EKEN26 NEXUS TR
+    </div>
+    <p>Travel, Tourism & Pi Network Ecosystem</p>
+</header>
+
+<main class="container">
+
+<a class="back" href="index.html">
+    ← Ana Sayfaya Dön
+</a>
+
+<section class="profile">
+
+<h2>👋 EKEN26 NEXUS TR'ye Hoş Geldiniz</h2>
+
+<p>
+EKEN26 NEXUS TR; Eskişehir ve çevresindeki
+turizm, konaklama, ulaşım, seyahat ve
+hizmet seçeneklerini bir araya getiren
+dijital bir platformdur.
+</p>
+
+<p>
+Amacımız kullanıcıların ihtiyaç duydukları
+hizmetleri kolayca keşfetmelerini ve
+Pi Network ekosistemiyle buluşturmaktır.
+</p>
+
+<div class="buttons">
+    <a href="index.html" class="button">
+        🏠 Ana Sayfa
+    </a>
+
+    <a href="#services" class="button secondary">
+        🌍 Hizmetleri Keşfet
+    </a>
+</div>
+
+</section>
+
+<h2 id="services">🌍 Turizm ve Seyahat Hizmetleri</h2>
+
+<section class="services">
+
+<div class="card">
+    <div class="card-icon">🚐</div>
+    <h3>VIP Transfer</h3>
+    <p>
+    Özel havaalanı transferleri ve
+    şehir içi ulaşım hizmetleri.
+    </p>
+    <a href="#contact">Detayları Gör →</a>
+</div>
+
+<div class="card">
+    <div class="card-icon">🏨</div>
+    <h3>Otel Rezervasyonu</h3>
+    <p>
+    Eskişehir ve çevresindeki
+    konaklama seçeneklerini keşfedin.
+    </p>
+    <a href="#contact">Otelleri Gör →</a>
+</div>
+
+<div class="card">
+    <div class="card-icon">🚌</div>
+    <h3>Günlük Turlar</h3>
+    <p>
+    Rehberli günlük turlar ve
+    yerel destinasyonları keşfedin.
+    </p>
+    <a href="#contact">Turları Gör →</a>
+</div>
+
+<div class="card">
+    <div class="card-icon">🌍</div>
+    <h3>Özel Seyahat Paketleri</h3>
+    <p>
+    Kişiye özel turizm ve seyahat
+    deneyimleri.
+    </p>
+    <a href="#contact">Paketleri Gör →</a>
+</div>
+
+<div class="card">
+    <div class="card-icon">♨️</div>
+    <h3>Termal Turizm</h3>
+    <p>
+    Termal tesisler, dinlenme ve
+    konaklama seçenekleri.
+    </p>
+    <a href="#contact">Detayları Gör →</a>
+</div>
+
+<div class="card">
+    <div class="card-icon">🏛️</div>
+    <h3>Kültür ve Gezi</h3>
+    <p>
+    Eskişehir ve çevresindeki
+    tarihi ve turistik yerleri keşfedin.
+    </p>
+    <a href="#contact">Keşfet →</a>
+</div>
+
+</section>
+
+<section class="info" id="contact">
+
+<h2>✨ EKEN26 NEXUS TR</h2>
+
+<p>
+EKEN26 NEXUS TR; elektronik, giyim,
+gıda, turizm, konaklama, ulaşım ve
+çeşitli hizmet kategorilerini tek
+platformda buluşturmayı hedeflemektedir.
+</p>
+
+<p>
+Pi Network entegrasyonu ile kullanıcıların
+dijital ekosistem içerisinde alışveriş
+ve hizmet ödemelerine ulaşması hedeflenmektedir.
+</p>
+
+<div class="notice">
+<strong>Bilgilendirme:</strong><br>
+Rezervasyon, kullanıcı kayıt sistemi ve
+gerçek Pi ödeme işlemleri, gerekli
+sunucu ve güvenli ödeme entegrasyonları
+tamamlandığında etkinleştirilecektir.
+</div>
+
+</section>
+
+</main>
+
+<footer>
+<strong>π EKEN26 NEXUS TR</strong>
+<br>
+Powered by Eken26 Nexus & Pi Network
+<br>
+© 2026 Eken26 - Tüm hakları saklıdır.
+</footer>
+
+</body>
+</html>
